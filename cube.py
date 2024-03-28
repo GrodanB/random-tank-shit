@@ -24,6 +24,7 @@ class Player:
         #filling surf
         self.orgimg.blit(self.body, (0, 0))
         self.orgimg.blit(self.barrel, (15, 20))
+        self.orgimg.convert_alpha()
 
         self.img = pygame.transform.rotate(self.orgimg, self.angle)
         self.rect = self.img.get_rect()
@@ -53,5 +54,5 @@ class Player:
         self.rect.y = self.pos[1]
 
     def draw(self, screen): 
-        screen.blit(self.img, self.rect)
+        screen.blit(self.img.convert_alpha(), self.rect)
         

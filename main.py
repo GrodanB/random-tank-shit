@@ -1,7 +1,7 @@
 import pygame, sys
 from pygame.locals import *
 import playerScript
-
+import setup
 def rectCollision(Ax, Ay, Awidth, Aheight, Bx, By, Bwidth, Bheight):
     return (Ax + Awidth > Bx) and (Ax < Bx + Bwidth) and (Ay + Aheight > By) and (Ay < By + Bheight)
 
@@ -10,11 +10,13 @@ class gameClass:
     def __init__(self) -> None:
         self.Clock = pygame.time.Clock()
         self.r = True
-        self.size = [700, 700]
-        self.screen = pygame.display.set_mode(self.size)
-        self.player = playerScript.Player(400, 400, True)
-        self.player2 = playerScript.Player(200, 200, False)
+        self.screenSize = [640, 640]
+        self.screen = pygame.display.set_mode(self.screenSize)
+        self.player = playerScript.Player(400, 400, 1, True)
+        self.player2 = playerScript.Player(200, 200, 1, False)
         self.deltaTime = 0
+        self.MapObj = setup.Map(1)
+        self.MapObj.loadMap()
     def handleEvent(self):
         if pygame.event.get(QUIT):
             self.r = False
@@ -60,22 +62,47 @@ class gameClass:
             if event.key == K_RIGHT:
                 self.player2.updateVal(angle=.125)
     def update(self):
+        self.player.update(self.deltaTime)
+        if self.player.getVal(pos=1)[0] < 0:
+            self.player.updateVal(x=0)
+        if self.player.getVal(pos=1)[1] < 0:
+            self.player.updateVal(y=0)
+        
+        if self.player.getVal(pos=1)[0] + self.player.getVal(size=1)[0] > self.screenSize[0]:
+            self.player.updateVal(x=self.screenSize[0]-self.player.getVal(size=1)[0])
+        if self.player.getVal(pos=1)[1] + self.player.getVal(size=1)[1] > self.screenSize[1]:
+            self.player.updateVal(y=self.screenSize[1]-self.player.getVal(size=1)[1])
+        
+        self.player2.update(self.deltaTime)
+        if self.player2.getVal(pos=1)[0] < 0:
+            self.player2.updateVal(x=0)
+        if self.player2.getVal(pos=1)[1] < 0:
+            self.player2.updateVal(y=0)
+        
+        if self.player2.getVal(pos=1)[0] + self.player2.getVal(size=1)[0] > self.screenSize[0]:
+            self.player2.updateVal(x=self.screenSize[0]-self.player2.getVal(size=1)[0])
+        if self.player2.getVal(pos=1)[1] + self.player2.getVal(size=1)[1] > self.screenSize[1]:
+            self.player2.updateVal(y=self.screenSize[1]-self.player2.getVal(size=1)[1])
+
+
         for bullet in self.player.bullets:
             if True == rectCollision(bullet.pos[0], bullet.pos[1], bullet.size[0], bullet.size[1],
                             self.player2.pos[0], self.player2.pos[1], self.player2.size[0], self.player2.size[1]):
-                self.player2 = playerScript.Player(200, 200, False)
+                self.player2 = playerScript.Player(200, 200, self.player2.scale, False)
         for bullet in self.player2.bullets:
             if True == rectCollision(bullet.pos[0], bullet.pos[1], bullet.size[0], bullet.size[1],
                             self.player.pos[0], self.player.pos[1], self.player.size[0], self.player.size[1]):
-                self.player = playerScript.Player(400, 400, True)
+                self.player = playerScript.Player(400, 400, self.player.scale,  True)
         return 0 
     def render(self):
         self.screen.fill((255, 255, 255))
-        self.player.update(self.deltaTime)
+        
         self.player.draw(self.screen)
-        self.player2.update(self.deltaTime)
+
         self.player2.draw(self.screen)
         
+        self.MapObj.draw(self.screen)
+
         self.deltaTime = self.Clock.get_time()
         self.Clock.tick(60)
         

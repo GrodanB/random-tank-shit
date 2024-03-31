@@ -1,7 +1,7 @@
 import pygame, math
 
 class Player:
-    def __init__(self, x, y, scale,  one) -> None:
+    def __init__(self, x, y, scale,  one, bullets = []) -> None:
         self.scale = scale
         self.size = [65*self.scale, 50*self.scale]
         self.rect = pygame.rect.Rect(x, y, 65*self.scale, 50*self.scale)
@@ -12,7 +12,7 @@ class Player:
         self.oldAngle = self.angle
         self.changeangle = 0
         self.speed = 0
-        self.bullets = []
+        self.bullets = bullets
         #Making tank
         #main Surf
         orgimg = pygame.image.load("data/img/tank.png")
@@ -24,13 +24,13 @@ class Player:
 
         self.img = pygame.transform.rotate(self.orgimg, self.angle)
         self.rect = self.img.get_rect()
-
+        self.rect.topleft = self.pos
     def updateVal(self, speed=None, x=None, y=None, angle=None, pos=None):
 
         if angle != None:
-            self.changeangle += angle
+            self.changeangle = angle
         if speed != None:
-            self.speed += speed
+            self.speed = speed
         if x != None:
             self.rect.x = x
             self.pos[0] = x
@@ -42,7 +42,7 @@ class Player:
     def getVal(self, speed=None, x=None, y=None, angle=None, pos=None, size=None):
         #Can only give ONE value/variable
         if angle != None:
-            return self.changeangle
+            return self.angle
         if speed != None:
             return self.speed
         if x != None:
@@ -52,7 +52,7 @@ class Player:
         if pos != None:
             return self.pos
         if size != None:
-            return self.size
+            return [self.img.get_width(), self.img.get_height()]
 
     def update(self, deltaTime):
         

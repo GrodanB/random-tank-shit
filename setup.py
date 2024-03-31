@@ -5,14 +5,14 @@ class Map:
     def __init__(self, scale):
         
 
-        wall_NS = pygame.Surface((4, 32))
+        wall_NS = pygame.Surface((5, 25))
         wall_NS.fill((0, 0, 0))
 
-        wall_WE = pygame.Surface((32, 4))
+        wall_WE = pygame.Surface((25, 5))
         wall_WE.fill((0, 0, 0))
         
 
-        wall_NS_WE = pygame.Surface((32, 32)).convert_alpha()
+        wall_NS_WE = pygame.Surface((25, 25)).convert_alpha()
         wall_NS_WE.blit(wall_WE, (0, 0))
         wall_NS_WE.blit(wall_NS, (0, 0))
         self.wallsSurfs = {"wall_WE": wall_WE,
@@ -28,30 +28,25 @@ class Map:
     def loadMap(self, name="Map 1"):
         self.mapName = name
         self.map = self.Json[self.mapName] 
-        self.LoadedMap = []
-        Yindex = 0
+        self.LoadedMap = pygame.Surface((20*25*self.scale, 20*25*self.scale)).convert_alpha()
+        Yint = 0
         for y in self.map:
-            self.LoadedMap.append([])
+            Xint = 0
             for x in y:
                 if x == 0:
-                    self.LoadedMap[Yindex].append(0)
+                    Xint+=1
+                    continue
                 if x == 1:
-                    self.LoadedMap[Yindex].append(self.wallsSurfs["wall_NS"])
+                    self.LoadedMap.blit(self.wallsSurfs["wall_NS"], (Xint*25*self.scale, Yint*25*self.scale))
                 if x == 2:
-                    self.LoadedMap[Yindex].append(self.wallsSurfs["wall_WE"])
+                    self.LoadedMap.blit(self.wallsSurfs["wall_WE"], (Xint*25*self.scale, Yint*25*self.scale))
                 if x == 3:
-                    self.LoadedMap[Yindex].append(self.wallsSurfs["wall_NS-WE"])
-            Yindex += 1
+                    self.LoadedMap.blit(self.wallsSurfs["wall_NS-WE"], (Xint*25*self.scale, Yint*25*self.scale))
+                Xint += 1
+            Yint += 1
         return self.LoadedMap
     def draw(self, screen:pygame.Surface):
         if self.LoadedMap == None:
             print("No map Loaded")
             return 1
-        Yint = 0
-        for y in self.LoadedMap:
-            Xint = 0
-            for x in y:
-                if x != 0:
-                    screen.blit(x, (Xint*32*self.scale,Yint*32*self.scale))
-                Xint += 1
-            Yint += 1
+        screen.blit(self.LoadedMap, (0, 0))

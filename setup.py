@@ -28,7 +28,7 @@ class Map:
     def loadMap(self, name="Map 1"):
         self.mapName = name
         self.map = self.Json[self.mapName] 
-        self.LoadedMap = pygame.Surface((20*25*self.scale, 20*25*self.scale)).convert_alpha()
+        self.LoadedMap = pygame.Surface((29*25*self.scale, 29*25*self.scale)).convert_alpha()
         Yint = 0
         for y in self.map:
             Xint = 0

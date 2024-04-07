@@ -61,10 +61,14 @@ class gameClass:
                        round(round(self.player.pos[1]+self.player.getVal(size=1)[1]+25)/25)):
             if y < 0:
                 y = 0
+            if y > len(self.MapObj.map)-1:
+                y = len(self.MapObj.map)-1
             for x in range(round(round(self.player.pos[0]-25)/25), 
                            round(round(self.player.pos[0]+self.player.getVal(size=1)[0]+25)/25)):
                 if x < 0:
                     x = 0
+                if x > len(self.MapObj.map[y])-1:
+                    x = len(self.MapObj.map[y])-1
                 print(x, y)
                 if self.MapObj.map[y][x] == 0:
                     continue

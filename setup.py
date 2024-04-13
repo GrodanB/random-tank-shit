@@ -5,10 +5,10 @@ class Map:
     def __init__(self, scale):
         
 
-        wall_NS = pygame.Surface((5, 25))
+        wall_NS = pygame.Surface((5, 25)).convert_alpha()
         wall_NS.fill((0, 0, 0))
 
-        wall_WE = pygame.Surface((25, 5))
+        wall_WE = pygame.Surface((25, 5)).convert_alpha()
         wall_WE.fill((0, 0, 0))
         
 

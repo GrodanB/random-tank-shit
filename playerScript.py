@@ -93,6 +93,7 @@ class Player:
 class bullet:
     def __init__(self, pos, angle, speed, owner, scale) -> None:
         self.pos = pos
+        self.age = 0
         self.flipped = [False, False]
         self.flippedTime = [0, 0]
         self.scale = scale
@@ -109,6 +110,7 @@ class bullet:
     def update(self, deltaTime):
         self.flippedTime[0] -= 1
         self.flippedTime[1] -= 1
+        self.age += 1
         if self.flipped[0] == False:
             self.pos[0] += math.cos(math.radians(self.angle)) * self.speed*self.scale*deltaTime
         else:

@@ -298,8 +298,8 @@ class gameClass:
     def bulletCollision(self, bullets, player):
         for bullet in bullets:
             if True == rectCollision(bullet.pos[0], bullet.pos[1], bullet.size[0], bullet.size[1],
-                            player.getVal(pos=1)[0], player.getVal(pos=1)[1], player.getVal(size=1)[0], player.getVal(size=1)[1]):
-                player = playerScript.Player(300, 300, player.scale, player.one, player.bullets)
+                            player.getVal(pos=1)[0], player.getVal(pos=1)[1], player.getVal(size=1)[0], player.getVal(size=1)[1]) and bullet.age > 15:
+                player = playerScript.Player(300, 300, player.scale, player.one, [])
         return player
     def update(self):
 
@@ -332,8 +332,11 @@ class gameClass:
             self.player2.updateVal(y=self.screenSize[1]-self.player2.getVal(size=1)[1])
         
         self.player2 = self.bulletCollision(self.player.bullets, self.player2)
-
+        self.player2 = self.bulletCollision(self.player2.bullets, self.player2)
+        
         self.player = self.bulletCollision(self.player2.bullets, self.player)
+        self.player = self.bulletCollision(self.player.bullets, self.player)
+        
 
         return 0 
     def render(self):

@@ -69,26 +69,31 @@ class gameClass:
                     x = 0
                 if x > len(self.MapObj.map[y])-1:
                     x = len(self.MapObj.map[y])-1
+
                 if self.MapObj.map[y][x] == 0:
                     continue
+
                 if self.MapObj.map[y][x] == 1:
                     if True == rectCollision(x*25, y*25, 5, 25, 
                                              self.player.pos[0], self.player.pos[1], 
                                              self.player.getVal(size=1)[0], self.player.getVal(size=1)[1]):
                         if self.player.speed != 0:
                             self.player.speed = 0
+
                 if self.MapObj.map[y][x] == 2:
                     if True == rectCollision(x*25, y*25, 25, 5, 
                                              self.player.pos[0], self.player.pos[1], 
                                              self.player.getVal(size=1)[0], self.player.getVal(size=1)[1]):
                         if self.player.speed != 0:
                             self.player.speed = 0
+
                 if self.MapObj.map[y][x] == 3:
                     if True == rectCollision(x*25, y*25, 25, 5, 
                                              self.player.pos[0], self.player.pos[1], 
                                              self.player.getVal(size=1)[0], self.player.getVal(size=1)[1]):
                         if self.player.speed != 0:
                             self.player.speed = 0
+
                     if True == rectCollision(x*25, y*25, 5, 25, 
                                              self.player.pos[0], self.player.pos[1], 
                                              self.player.getVal(size=1)[0], self.player.getVal(size=1)[1]):
@@ -113,14 +118,14 @@ class gameClass:
             self.player2.updateVal(y=0)
         
         if self.player2.getVal(pos=1)[0] + self.player2.getVal(size=1)[0] > self.screenSize[0]:
-            self.player2.updateVal(x=self.screenSizeaaw[0]-self.player2.getVal(size=1)[0])
+            self.player2.updateVal(x=self.screenSize[0]-self.player2.getVal(size=1)[0])
         if self.player2.getVal(pos=1)[1] + self.player2.getVal(size=1)[1] > self.screenSize[1]:
             self.player2.updateVal(y=self.screenSize[1]-self.player2.getVal(size=1)[1])
         
         for bullet in self.player.bullets:
             if True == rectCollision(bullet.pos[0], bullet.pos[1], bullet.size[0], bullet.size[1],
-                            self.player2.pos[0], self.player2.pos[1], self.player2.size[0], self.player2.size[1]):
-                self.player2 = playerScript.Player(200, 200, self.player2.scale, False, self.player.bullets)
+                            self.player2.pos[0], self.player2.pos[1], self.player2.getVal(size=1)[0], self.player2.getVal(size=1)[1]):
+                self.player2 = playerScript.Player(200, 200, self.player2.scale, False, self.player2.bullets)
         for bullet in self.player2.bullets:
             if True == rectCollision(bullet.pos[0], bullet.pos[1], bullet.size[0], bullet.size[1],
                             self.player.pos[0], self.player.pos[1], self.player.getVal(size=1)[0], self.player.getVal(size=1)[1]):

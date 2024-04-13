@@ -4,6 +4,7 @@ class Player:
     def __init__(self, x, y, scale,  one, bullets = []) -> None:
         self.scale = scale
         self.size = [65*self.scale, 50*self.scale]
+        self.tanksize = [50*self.scale, 50*self.scale]
         self.rect = pygame.rect.Rect(x, y, 65*self.scale, 50*self.scale)
         #needed because of shity rounding from rect.x being an int
         self.pos: float = [x, y]
@@ -46,14 +47,14 @@ class Player:
         if speed != None:
             return self.speed
         if x != None:
-            return self.x
+            return self.rect.x
         if y != None:
             return self.rect.y
         if pos != None:
             return self.pos
         if size != None:
             return [self.img.get_width(), self.img.get_height()]
-
+    
     def update(self, deltaTime):
         
         self.angle += round(self.changeangle * deltaTime)

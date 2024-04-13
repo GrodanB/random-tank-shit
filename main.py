@@ -69,7 +69,6 @@ class gameClass:
                     x = 0
                 if x > len(self.MapObj.map[y])-1:
                     x = len(self.MapObj.map[y])-1
-                print(x, y)
                 if self.MapObj.map[y][x] == 0:
                     continue
                 if self.MapObj.map[y][x] == 1:
@@ -130,11 +129,11 @@ class gameClass:
     def render(self):
         self.screen.fill((255, 255, 255))
         
+        self.MapObj.draw(self.screen)
+        
         self.player.draw(self.screen)
 
         self.player2.draw(self.screen)
-        
-        self.MapObj.draw(self.screen)
 
         self.deltaTime = self.Clock.get_time()
         self.Clock.tick(60)

@@ -5,14 +5,17 @@ class Map:
     def __init__(self, scale):
         
 
-        wall_NS = pygame.Surface((5, 25)).convert_alpha()
+        wall_NS = pygame.Surface((5, 25))
         wall_NS.fill((0, 0, 0))
 
-        wall_WE = pygame.Surface((25, 5)).convert_alpha()
+
+        wall_WE = pygame.Surface((25, 5))
         wall_WE.fill((0, 0, 0))
+
         
 
         wall_NS_WE = pygame.Surface((25, 25)).convert_alpha()
+        wall_NS_WE.fill((0, 0, 0, 0))
         wall_NS_WE.blit(wall_WE, (0, 0))
         wall_NS_WE.blit(wall_NS, (0, 0))
         self.wallsSurfs = {"wall_WE": wall_WE,
@@ -28,7 +31,8 @@ class Map:
     def loadMap(self, name="Map 1"):
         self.mapName = name
         self.map = self.Json[self.mapName] 
-        self.LoadedMap = pygame.Surface((29*25*self.scale, 29*25*self.scale)).convert_alpha()
+        self.LoadedMap: pygame.Surface = pygame.Surface((29*25*self.scale, 29*25*self.scale)).convert_alpha()
+        self.LoadedMap.fill((0, 0, 0, 0))
         Yint = 0
         for y in self.map:
             Xint = 0

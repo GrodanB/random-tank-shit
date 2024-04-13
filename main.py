@@ -99,6 +99,7 @@ class gameClass:
                         if player.speed != 0:
                             player.speed = 0
     def mapBulletCollision(self, bullets):
+        bulletwaitTime = 5
         for bullet in bullets:
             for y in range(round(round(bullet.pos[1]-25)/25), 
                         round(round(bullet.pos[1]+bullet.getVal(size=1)[1]+25)/25)):
@@ -117,69 +118,182 @@ class gameClass:
                         continue
 
                     if self.MapObj.map[y][x] == 1:
+                        #CUBE
+                        # #
+                        # #
+                        # #
+                        # #
                         #Right or Left Side hit
-                        if True == rectCollision(x*25+3, y*25, 2, 25, 
-                                            bullet.pos[0], bullet.pos[1], 
-                                            bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]) or True == rectCollision(x*25, y*25, 2, 25, 
-                                            bullet.pos[0], bullet.pos[1], 
-                                            bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):    
-                            bullet.flipped[0] = not bullet.flipped[0]
-                        #Bottom or Top Side hit
-                        if True == rectCollision(x*25, y*25+23, 5, 2, 
-                                            bullet.pos[0], bullet.pos[1], 
-                                            bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]) or True == rectCollision(x*25, y*25, 5, 2, 
-                                            bullet.pos[0], bullet.pos[1], 
-                                            bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
-                            bullet.flipped[1] = not bullet.flipped[1]
+                        if bullet.flippedTime[0] < 0:
+                            if True == rectCollision(x*25+3, y*25, 3, 25, 
+                                                bullet.pos[0], bullet.pos[1], 
+                                                bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]) or True == rectCollision(x*25, y*25, 2, 25, 
+                                                bullet.pos[0], bullet.pos[1], 
+                                                bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):    
+                                bullet.flipped[0] = not bullet.flipped[0]
+                                bullet.flippedTime[0] = bulletwaitTime
+                        #Bottom Side hit 
+                        if bullet.flippedTime[1] < 0:
+                            if y+1 != len(self.MapObj.map):
+                                if self.MapObj.map[y+1][x] != 1 and self.MapObj.map[y+1][x] != 3: 
+                                    if True == rectCollision(x*25, y*25+23, 5, 3, 
+                                                        bullet.pos[0], bullet.pos[1], 
+                                                        bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
+                                        bullet.flipped[1] = not bullet.flipped[1]
+                                        bullet.flippedTime[1] = bulletwaitTime
+                            else:
+                                if True == rectCollision(x*25, y*25+23, 5, 3, 
+                                                        bullet.pos[0], bullet.pos[1], 
+                                                        bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
+                                    bullet.flipped[1] = not bullet.flipped[1]
+                                    bullet.flippedTime[1] = bulletwaitTime
+                            #Top Side hit
+                            if y-1 != -1:
+                                if self.MapObj.map[y-1][x] != 1 and self.MapObj.map[y-1][x] != 3: 
+                                    if True == rectCollision(x*25, y*25, 5, 3, 
+                                                        bullet.pos[0], bullet.pos[1], 
+                                                        bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
+                                        bullet.flipped[1] = not bullet.flipped[1]
+                                        bullet.flippedTime[1] = bulletwaitTime
+                            else:
+                                if True == rectCollision(x*25, y*25, 5, 3, 
+                                                    bullet.pos[0], bullet.pos[1], 
+                                                    bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
+                                    bullet.flipped[1] = not bullet.flipped[1]
+                                    bullet.flippedTime[1] = bulletwaitTime
 
                     if self.MapObj.map[y][x] == 2:
+                        #CUBE 
+                        # ####
                         #Right or Left Side hit
-                        if True == rectCollision(x*25+23, y*25, 2, 5, 
-                                            bullet.pos[0], bullet.pos[1], 
-                                            bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]) or True == rectCollision(x*25, y*25, 2, 5, 
-                                            bullet.pos[0], bullet.pos[1], 
-                                            bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):    
-                            bullet.flipped[0] = not bullet.flipped[0]
-                        #Bottom or Top Side hit
-                        if True == rectCollision(x*25, y*25+3, 25, 2, 
-                                            bullet.pos[0], bullet.pos[1], 
-                                            bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]) or True == rectCollision(x*25, y*25, 25, 2, 
-                                            bullet.pos[0], bullet.pos[1], 
-                                            bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
-                            bullet.flipped[1] = not bullet.flipped[1]
+                        if bullet.flippedTime[0] < 0:
+                            if x+1 != len(self.MapObj.map[y]):
+                                if self.MapObj.map[y][x+1] != 2 and self.MapObj.map[y][x+1] != 3: 
+                                    if True == rectCollision(x*25+23, y*25, 2, 5, 
+                                                        bullet.pos[0], bullet.pos[1], 
+                                                        bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
+                                        bullet.flipped[0] = not bullet.flipped[0]
+                                        bullet.flippedTime[0] = bulletwaitTime
+                            else:
+                                if True == rectCollision(x*25+23, y*25, 2, 5, 
+                                                        bullet.pos[0], bullet.pos[1], 
+                                                        bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
+                                    bullet.flipped[0] = not bullet.flipped[0]
+                                    bullet.flippedTime[0] = bulletwaitTime
+                            if x-1 != -1:
+                                if self.MapObj.map[y][x-1] != 2 and self.MapObj.map[y][x-1] != 3:     
+                                    if True == rectCollision(x*25, y*25, 2, 5, 
+                                                        bullet.pos[0], bullet.pos[1], 
+                                                        bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):    
+                                        bullet.flipped[0] = not bullet.flipped[0]
+                                        bullet.flippedTime[0] = bulletwaitTime
+                            else:
+                                if True == rectCollision(x*25, y*25, 2, 5, 
+                                                        bullet.pos[0], bullet.pos[1], 
+                                                        bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):    
+                                        bullet.flipped[0] = not bullet.flipped[0]
+                                        bullet.flippedTime[0] = bulletwaitTime
+                        
+                        #Bottom Side hit
+                        #Top Side hit
+                        if bullet.flippedTime[1] < 0:
+                            if True == rectCollision(x*25, y*25+3, 25, 2, 
+                                                bullet.pos[0], bullet.pos[1], 
+                                                bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]) or True == rectCollision(x*25, y*25, 25, 2, 
+                                                bullet.pos[0], bullet.pos[1], 
+                                                bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
+                                bullet.flipped[1] = not bullet.flipped[1]
+                                bullet.flippedTime[1] = bulletwaitTime
 
                     if self.MapObj.map[y][x] == 3:
+                        #CUBE
+                        # #
+                        # #
+                        # #
+                        # #
                         #Right or Left Side hit
-                        if True == rectCollision(x*25+23, y*25, 2, 5, 
-                                            bullet.pos[0], bullet.pos[1], 
-                                            bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]) or True == rectCollision(x*25, y*25, 2, 5, 
-                                            bullet.pos[0], bullet.pos[1], 
-                                            bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):    
-                            bullet.flipped[0] = not bullet.flipped[0]
-                        #Bottom or Top Side hit
-                        if True == rectCollision(x*25, y*25+3, 25, 2, 
-                                            bullet.pos[0], bullet.pos[1], 
-                                            bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]) or True == rectCollision(x*25, y*25, 25, 2, 
-                                            bullet.pos[0], bullet.pos[1], 
-                                            bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
-                            bullet.flipped[1] = not bullet.flipped[1]
+                        if bullet.flippedTime[0] < 0:
+                            if True == rectCollision(x*25+3, y*25+5, 2, 20, 
+                                                bullet.pos[0], bullet.pos[1], 
+                                                bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]) or True == rectCollision(x*25, y*25, 2, 25, 
+                                                bullet.pos[0], bullet.pos[1], 
+                                                bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):    
+                                bullet.flipped[0] = not bullet.flipped[0]
+                                bullet.flippedTime[0] = bulletwaitTime
+                        
+                        #Bottom Side hit 
+                        if bullet.flippedTime[1] < 0:
+                            if y+1 != len(self.MapObj.map):
+                                if self.MapObj.map[y+1][x] != 1 and self.MapObj.map[y+1][x] != 3: 
+                                    if True == rectCollision(x*25, y*25+23, 5, 2, 
+                                                        bullet.pos[0], bullet.pos[1], 
+                                                        bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
+                                        bullet.flipped[1] = not bullet.flipped[1]
+                                        bullet.flippedTime[1] = bulletwaitTime
+                            else:
+                                if True == rectCollision(x*25, y*25+23, 5, 2, 
+                                                        bullet.pos[0], bullet.pos[1], 
+                                                        bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
+                                    bullet.flipped[1] = not bullet.flipped[1]
+                                    bullet.flippedTime[1] = bulletwaitTime
+                            #Top Side hit
+                            if y-1 != -1:
+                                if self.MapObj.map[y-1][x] != 1 and self.MapObj.map[y-1][x] != 3: 
+                                    if True == rectCollision(x*25, y*25, 5, 2, 
+                                                        bullet.pos[0], bullet.pos[1], 
+                                                        bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
+                                        bullet.flipped[1] = not bullet.flipped[1]
+                                        bullet.flippedTime[1] = bulletwaitTime
+                            else:
+                                if True == rectCollision(x*25, y*25, 5, 2, 
+                                                    bullet.pos[0], bullet.pos[1], 
+                                                    bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
+                                    bullet.flipped[1] = not bullet.flipped[1]
+                                    bullet.flippedTime[1] = bulletwaitTime
                         
                         #other one 
 
+                        #CUBE 
+                        # ####
                         #Right or Left Side hit
-                        if True == rectCollision(x*25+3, y*25, 2, 25, 
-                                            bullet.pos[0], bullet.pos[1], 
-                                            bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]) or True == rectCollision(x*25, y*25, 2, 25, 
-                                            bullet.pos[0], bullet.pos[1], 
-                                            bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):    
-                            bullet.flipped[0] = not bullet.flipped[0]
-                        #Bottom or Top Side hit
-                        if True == rectCollision(x*25, y*25+23, 5, 2, 
-                                            bullet.pos[0], bullet.pos[1], 
-                                            bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]) or True == rectCollision(x*25, y*25, 5, 2, 
-                                            bullet.pos[0], bullet.pos[1], 
-                                            bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
-                            bullet.flipped[1] = not bullet.flipped[1]
+                        if bullet.flippedTime[0] < 0:
+                            if x+1 != len(self.MapObj.map[y]):
+                                if self.MapObj.map[y][x+1] != 2 and self.MapObj.map[y][x+1] != 3: 
+                                    if True == rectCollision(x*25+23, y*25, 2, 5, 
+                                                        bullet.pos[0], bullet.pos[1], 
+                                                        bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
+                                        bullet.flipped[0] = not bullet.flipped[0]
+                                        bullet.flippedTime[0] = bulletwaitTime
+                            else:
+                                if True == rectCollision(x*25+23, y*25, 2, 5, 
+                                                        bullet.pos[0], bullet.pos[1], 
+                                                        bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
+                                    bullet.flipped[0] = not bullet.flipped[0]
+                                    bullet.flippedTime[0] = bulletwaitTime
+                            if x-1 != -1:
+                                if self.MapObj.map[y][x-1] != 2 and self.MapObj.map[y][x-1] != 3:     
+                                    if True == rectCollision(x*25, y*25, 2, 5, 
+                                                        bullet.pos[0], bullet.pos[1], 
+                                                        bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):    
+                                        bullet.flipped[0] = not bullet.flipped[0]
+                                        bullet.flippedTime[0] = bulletwaitTime
+                            else:
+                                if True == rectCollision(x*25, y*25, 2, 5, 
+                                                        bullet.pos[0], bullet.pos[1], 
+                                                        bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):    
+                                        bullet.flipped[0] = not bullet.flipped[0]
+                                        bullet.flippedTime[0] = bulletwaitTime
+                        
+                        #Bottom Side hit
+                        #Top Side hit
+                        if bullet.flippedTime[1] < 0:
+                            if True == rectCollision(x*25+5, y*25+3, 20, 2, 
+                                                bullet.pos[0], bullet.pos[1], 
+                                                bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]) or True == rectCollision(x*25, y*25, 25, 2, 
+                                                bullet.pos[0], bullet.pos[1], 
+                                                bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
+                                bullet.flipped[1] = not bullet.flipped[1]
+                            bullet.flippedTime[1] = bulletwaitTime
 
     def bulletCollision(self, bullets, player):
         for bullet in bullets:

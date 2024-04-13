@@ -94,18 +94,21 @@ class bullet:
     def __init__(self, pos, angle, speed, owner, scale) -> None:
         self.pos = pos
         self.flipped = [False, False]
+        self.flippedTime = [0, 0]
         self.scale = scale
         self.angle = angle
         self.speed = speed
-        self.size = [3*self.scale, 3*self.scale]
-        self.orgimg = pygame.surface.Surface(self.size)
-        self.orgimg.fill((0, 0, 0))
+        self.size = [5*self.scale, 5*self.scale]
+        self.orgimg = pygame.surface.Surface(self.size).convert_alpha()
+        self.orgimg.fill((0, 0, 0, 255))
+        
         self.img = pygame.transform.rotate(self.orgimg, self.angle).convert_alpha()
         self.owner = owner
     def draw(self, screen):
         screen.blit(self.img, self.pos)
     def update(self, deltaTime):
-        
+        self.flippedTime[0] -= 1
+        self.flippedTime[1] -= 1
         if self.flipped[0] == False:
             self.pos[0] += math.cos(math.radians(self.angle)) * self.speed*self.scale*deltaTime
         else:

@@ -1,11 +1,12 @@
 import pygame, math
 
 class Player:
-    def __init__(self, x, y, scale,  one, bullets = []) -> None:
+    def __init__(self, x, y, scale, one, bullets) -> None:
         self.scale = scale
         self.size = [65*self.scale, 50*self.scale]
         self.tanksize = [50*self.scale, 50*self.scale]
         self.rect = pygame.rect.Rect(x, y, 65*self.scale, 50*self.scale)
+        self.one = one
         #needed because of shity rounding from rect.x being an int
         self.pos: float = [x, y]
         self.rect.center = (self.rect.width/2, self.rect.height/2)
@@ -87,11 +88,12 @@ class Player:
         pos = [0, 0]
         pos[0] = self.rect.centerx + math.cos(math.radians(self.angle)) * (60*self.scale/2)
         pos[1] = self.rect.centery - math.sin(math.radians(self.angle)) * (60*self.scale/2)
-        self.bullets.append(bullet(pos, self.angle, .5, self, self.scale))
+        self.bullets.append(bullet(pos, self.angle, .13, self, self.scale))
         
 class bullet:
     def __init__(self, pos, angle, speed, owner, scale) -> None:
         self.pos = pos
+        self.flipped = [False, False]
         self.scale = scale
         self.angle = angle
         self.speed = speed
@@ -103,5 +105,28 @@ class bullet:
     def draw(self, screen):
         screen.blit(self.img, self.pos)
     def update(self, deltaTime):
-        self.pos[0] += math.cos(math.radians(self.angle)) * self.speed*self.scale*deltaTime
-        self.pos[1] -= math.sin(math.radians(self.angle)) * self.speed*self.scale*deltaTime
+        
+        if self.flipped[0] == False:
+            self.pos[0] += math.cos(math.radians(self.angle)) * self.speed*self.scale*deltaTime
+        else:
+            self.pos[0] -= math.cos(math.radians(self.angle)) * self.speed*self.scale*deltaTime
+
+        if self.flipped[1] == False:
+            self.pos[1] -= math.sin(math.radians(self.angle)) * self.speed*self.scale*deltaTime
+        else:
+            self.pos[1] += math.sin(math.radians(self.angle)) * self.speed*self.scale*deltaTime
+    
+    def getVal(self, speed=None, x=None, y=None, angle=None, pos=None, size=None):
+        #Can only give ONE value/variable
+        if angle != None:
+            return self.angle
+        if speed != None:
+            return self.speed
+        if x != None:
+            return self.pos[0]
+        if y != None:
+            return self.pos[1]
+        if pos != None:
+            return self.pos
+        if size != None:
+            return [self.img.get_width(), self.img.get_height()]

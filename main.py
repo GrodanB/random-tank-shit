@@ -137,13 +137,13 @@ class gameClass:
                         if bullet.flippedTime[1] < 0:
                             if y+1 != len(self.MapObj.map):
                                 if self.MapObj.map[y+1][x] != 1 and self.MapObj.map[y+1][x] != 3: 
-                                    if True == rectCollision(x*25, y*25+23, 5, 3, 
-                                                        bullet.pos[0], bullet.pos[1], 
+                                    if True == rectCollision(x*25, y*25+23, 5, 3,
+                                                        bullet.pos[0], bullet.pos[1],
                                                         bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
                                         bullet.flipped[1] = not bullet.flipped[1]
                                         bullet.flippedTime[1] = bulletwaitTime
                             else:
-                                if True == rectCollision(x*25, y*25+23, 5, 3, 
+                                if True == rectCollision(x*25, y*25+23, 5, 3,
                                                         bullet.pos[0], bullet.pos[1], 
                                                         bullet.getVal(size=1)[0], bullet.getVal(size=1)[1]):
                                     bullet.flipped[1] = not bullet.flipped[1]
@@ -348,6 +348,8 @@ class gameClass:
         self.MapObj.draw(self.screen)
         
         self.player.draw(self.screen)
+        pygame.draw.rect(self.screen, (255, 0, 0), pygame.Rect(self.player.getVal(pos=1), self.player.getVal(size=1)))
+
         self.player2.draw(self.screen)
 
         self.deltaTime = self.Clock.get_time()

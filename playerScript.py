@@ -16,12 +16,8 @@ class Rectangle:
         self.rotCenter()
         self.getOffset()
     def rotCenter(self):
-        size = self.rect.size
         self.img = pygame.transform.rotate(self.orgimg, self.angle).convert_alpha()
-        Topleft = [size[0]/2 - (self.img.get_width()/2),  #X
-                    size[1]/2 - (self.img.get_height()/2)] #Y
-        self.rect = self.img.get_rect(topleft = Topleft)
-        return self.rect, self.img
+        return self.img
     def getOffset(self):
         self.offset = [(math.cos(math.radians(self.angle))*self.offsetDistance), -(math.sin(math.radians(self.angle))*self.offsetDistance)]
         return self.offset
@@ -30,7 +26,7 @@ class Rectangle:
             self.rotCenter()
             self.getOffset()
             self.angle = angle
-    def draw(self, screen: pygame.surface, pos: tuple):
+    def draw(self, screen: pygame.surface, pos: list):
         screen.blit(self.img, (pos[0] + self.offset[0] - self.img.get_width()/2, pos[1] + self.offset[1] - self.img.get_height()/2))
 
 class Player:
@@ -39,7 +35,7 @@ class Player:
         self.size = [65*self.scale, 50*self.scale]
         self.tanksize = [50*self.scale, 50*self.scale]
         self.one = one
-        self.pos: float = [x, y]
+        self.pos = [x, y]
         self.angle = 0
         self.oldAngle = self.angle
         self.changeangle = 0
@@ -91,7 +87,7 @@ class Player:
         if y != None:
             return self.pos[1]
         if pos != None:
-            return [self.pos[0]-self.Base.img.get_width()/2, self.pos[1]-self.Base.img.get_height()/2]
+            return self.pos
         if size != None:
             return [self.Base.img.get_width(), self.Base.img.get_height()]
     
@@ -112,17 +108,19 @@ class Player:
 
     def draw(self, screen): 
 
-        self.Base.draw(screen, self.pos)
-        self.Turret.draw(screen, self.pos)
-        self.Canon.draw(screen, self.pos)
+        pos = [self.pos[0] + self.tanksize[0]/2, self.pos[1] + self.tanksize[1]/2]
+        self.Base.draw(screen, pos)
+
+        self.Turret.draw(screen, pos)
+        self.Canon.draw(screen, pos)
         for Bullet in self.bullets:
             Bullet.draw(screen)
 
     def shoot(self):
         
         pos = [0, 0]
-        pos[0] = self.pos[0] + self.Canon.offset[0] + math.cos(math.radians(self.angle)) * (5*self.scale)
-        pos[1] = self.pos[1] + self.Canon.offset[1] - math.sin(math.radians(self.angle)) * (5*self.scale)
+        pos[0] = self.pos[0] + self.Canon.offset[0] + self.tanksize[0]/2 + math.cos(math.radians(self.angle)) * (self.Canon.orgimg.get_width()/2)
+        pos[1] = self.pos[1] + self.Canon.offset[1] + self.tanksize[1]/2 - math.sin(math.radians(self.angle)) * (self.Canon.orgimg.get_width()/2)
         self.bullets.append(bullet(pos, self.angle, .13, self, self.scale))
         
 

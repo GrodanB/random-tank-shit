@@ -56,14 +56,15 @@ class gameClass:
                 self.player2.shoot()
 
     def mapPlayerCollision(self, player):
-        for y in range(round(round(player.pos[1]-25)/25), 
-                       round(round(player.pos[1]+player.getVal(size=1)[1]+25)/25)):
+        playerPos = player.getVal(pos=1)
+        for y in range(round(round(playerPos[1]-25)/25), 
+                       round(round(playerPos[1]+player.getVal(size=1)[1]+25)/25)):
             if y < 0:
                 y = 0
             if y > len(self.MapObj.map)-1:
                 y = len(self.MapObj.map)-1
-            for x in range(round(round(player.pos[0]-25)/25), 
-                           round(round(player.pos[0]+player.getVal(size=1)[0]+25)/25)):
+            for x in range(round(round(playerPos[0]-25)/25), 
+                           round(round(playerPos[0]+player.getVal(size=1)[0]+25)/25)):
                 if x < 0:
                     x = 0
                 if x > len(self.MapObj.map[y])-1:
@@ -74,27 +75,27 @@ class gameClass:
 
                 if self.MapObj.map[y][x] == 1:
                     if True == rectCollision(x*25, y*25, 5, 25, 
-                                             player.pos[0], player.pos[1], 
+                                             playerPos[0], playerPos[1], 
                                              player.getVal(size=1)[0], player.getVal(size=1)[1]):
                         if player.speed != 0:
                             player.speed = 0
 
                 if self.MapObj.map[y][x] == 2:
                     if True == rectCollision(x*25, y*25, 25, 5, 
-                                             player.pos[0], player.pos[1], 
+                                             playerPos[0], playerPos[1], 
                                              player.getVal(size=1)[0], player.getVal(size=1)[1]):
                         if player.speed != 0:
                             player.speed = 0
 
                 if self.MapObj.map[y][x] == 3:
                     if True == rectCollision(x*25, y*25, 25, 5, 
-                                             player.pos[0], player.pos[1], 
+                                             playerPos[0], playerPos[1], 
                                              player.getVal(size=1)[0], player.getVal(size=1)[1]):
                         if player.speed != 0:
                             player.speed = 0
 
                     if True == rectCollision(x*25, y*25, 5, 25, 
-                                             player.pos[0], player.pos[1], 
+                                             playerPos[0], playerPos[1], 
                                              player.getVal(size=1)[0], player.getVal(size=1)[1]):
                         if player.speed != 0:
                             player.speed = 0
@@ -296,9 +297,11 @@ class gameClass:
                             bullet.flippedTime[1] = bulletwaitTime
 
     def bulletCollision(self, bullets, player):
+        playerPos = player.getVal(pos=1)
+        playerSize = player.getVal(size=1)
         for bullet in bullets:
             if True == rectCollision(bullet.pos[0], bullet.pos[1], bullet.size[0], bullet.size[1],
-                            player.getVal(pos=1)[0], player.getVal(pos=1)[1], player.getVal(size=1)[0], player.getVal(size=1)[1]) and bullet.age > 15:
+                            playerPos[0], playerPos[1], playerSize[0], playerSize[1]) and bullet.age > 20:
                 player = playerScript.Player(300, 300, player.scale, player.one, [])
         return player
     def update(self):
@@ -345,7 +348,6 @@ class gameClass:
         self.MapObj.draw(self.screen)
         
         self.player.draw(self.screen)
-
         self.player2.draw(self.screen)
 
         self.deltaTime = self.Clock.get_time()
